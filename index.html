@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kotha Gowtham Reddy — AI, Data & Game Systems</title>
+<meta name="description" content="Kotha Gowtham Reddy — Computer Science graduate student specializing in AI/Data Science, Data Analytics, and Unity game development.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0e14;
+    --bg-panel:#12161f;
+    --bg-panel-2:#171c28;
+    --line:#232a38;
+    --text:#e7ebf3;
+    --muted:#8b93a7;
+    --mint:#7cffc4;
+    --amber:#ffb454;
+    --violet:#a48bff;
+    --mono:'JetBrains Mono', monospace;
+    --sans:'Inter', sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+  a{color:inherit;text-decoration:none;}
+  .inner{max-width:1080px;margin:0 auto;padding:0 2rem;}
+  ::selection{background:var(--mint);color:#0b0e14;}
+
+  /* background grid texture */
+  body::before{
+    content:'';
+    position:fixed;inset:0;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size:64px 64px;
+    opacity:0.25;
+    pointer-events:none;
+    z-index:0;
+  }
+
+  /* NAV */
+  #nav{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:1.1rem 2rem;
+    background:rgba(11,14,20,0.85);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-logo{
+    font-family:var(--mono);font-weight:700;font-size:0.95rem;
+    display:flex;align-items:center;gap:0.5rem;color:var(--text);
+  }
+  .nav-logo .dot{width:8px;height:8px;border-radius:50%;background:var(--mint);box-shadow:0 0 8px var(--mint);}
+  .nav-links{display:flex;gap:1.8rem;align-items:center;font-size:0.88rem;color:var(--muted);}
+  .nav-links a{transition:color .2s;}
+  .nav-links a:hover{color:var(--mint);}
+  .nav-resume{
+    border:1px solid var(--mint);color:var(--mint)!important;
+    padding:0.4rem 0.9rem;border-radius:6px;font-family:var(--mono);font-size:0.8rem;
+    transition:background .2s;
+  }
+  .nav-resume:hover{background:rgba(124,255,196,0.1);}
+  .hamburger{display:none;background:none;border:none;color:var(--text);font-size:1.4rem;cursor:pointer;}
+  .mobile-menu{
+    display:none;position:fixed;top:60px;left:0;right:0;z-index:99;
+    background:var(--bg-panel);border-bottom:1px solid var(--line);
+    flex-direction:column;padding:1rem 2rem;gap:1rem;
+  }
+  .mobile-menu.open{display:flex;}
+  @media(max-width:760px){
+    .nav-links{display:none;}
+    .hamburger{display:block;}
+  }
+
+  /* HERO */
+  #home{
+    position:relative;min-height:100vh;
+    display:flex;align-items:center;
+    padding:7rem 2rem 4rem;
+  }
+  .hero-inner{max-width:1080px;margin:0 auto;width:100%;position:relative;z-index:1;}
+  .hero-eyebrow{
+    font-family:var(--mono);font-size:0.85rem;color:var(--mint);
+    display:flex;align-items:center;gap:0.6rem;margin-bottom:1.4rem;
+    letter-spacing:0.02em;
+  }
+  .hero-eyebrow::before{content:'>';color:var(--amber);}
+  .hero-name{
+    font-size:clamp(2.6rem, 7vw, 5rem);
+    font-weight:800;line-height:1.03;letter-spacing:-0.02em;
+    margin-bottom:1.3rem;
+  }
+  .hero-name .highlight{
+    background:linear-gradient(100deg, var(--mint), var(--violet));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .hero-bio{
+    max-width:640px;color:var(--muted);font-size:1.08rem;margin-bottom:2rem;
+  }
+  .hero-tags{display:flex;flex-wrap:wrap;gap:0.6rem;margin-bottom:2.4rem;}
+  .hero-tag{
+    font-family:var(--mono);font-size:0.78rem;color:var(--text);
+    border:1px solid var(--line);background:var(--bg-panel);
+    padding:0.35rem 0.8rem;border-radius:100px;
+  }
+  .hero-cta{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:3rem;}
+  .btn{
+    display:inline-flex;align-items:center;gap:0.5rem;
+    padding:0.8rem 1.5rem;border-radius:8px;font-weight:600;font-size:0.92rem;
+    transition:transform .2s, box-shadow .2s;
+  }
+  .btn-primary{background:var(--mint);color:#0b0e14;}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(124,255,196,0.25);}
+  .btn-outline{border:1px solid var(--line);color:var(--text);}
+  .btn-outline:hover{border-color:var(--mint);color:var(--mint);}
+
+  /* HUD stat strip - signature element */
+  .hud{
+    display:grid;grid-template-columns:repeat(4,1fr);
+    border:1px solid var(--line);border-radius:12px;overflow:hidden;
+    background:var(--bg-panel);
+  }
+  .hud-cell{
+    padding:1.3rem 1.2rem;border-right:1px solid var(--line);
+    position:relative;
+  }
+  .hud-cell:last-child{border-right:none;}
+  .hud-cell .val{font-family:var(--mono);font-size:1.7rem;font-weight:700;color:var(--mint);}
+  .hud-cell .lbl{font-size:0.75rem;color:var(--muted);margin-top:0.3rem;text-transform:uppercase;letter-spacing:0.03em;}
+  @media(max-width:700px){.hud{grid-template-columns:repeat(2,1fr);} .hud-cell:nth-child(2){border-right:none;}}
+
+  /* SECTION HEADERS */
+  section{padding:6rem 0;position:relative;z-index:1;}
+  .s-eyebrow{
+    font-family:var(--mono);color:var(--amber);font-size:0.82rem;
+    display:flex;align-items:center;gap:0.6rem;margin-bottom:0.8rem;
+  }
+  .s-eyebrow::before{content:'//';color:var(--muted);}
+  .s-title{font-size:clamp(1.8rem,4vw,2.6rem);font-weight:800;margin-bottom:3rem;}
+
+  /* ABOUT */
+  .about-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:3rem;align-items:start;}
+  .about-text p{color:var(--muted);margin-bottom:1rem;}
+  .about-text strong{color:var(--text);}
+  .edu-card{
+    background:var(--bg-panel);border:1px solid var(--line);border-radius:12px;
+    padding:1.3rem 1.4rem;margin-bottom:1rem;
+  }
+  .edu-card .school{font-weight:700;font-size:1rem;}
+  .edu-card .degree{color:var(--mint);font-size:0.88rem;margin-top:0.2rem;}
+  .edu-card .meta{color:var(--muted);font-size:0.82rem;margin-top:0.5rem;font-family:var(--mono);}
+  @media(max-width:800px){.about-grid{grid-template-columns:1fr;}}
+
+  /* SKILLS */
+  .skills-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.2rem;}
+  .skill-card{
+    background:var(--bg-panel);border:1px solid var(--line);border-radius:12px;padding:1.4rem 1.5rem;
+  }
+  .skill-card .cat{
+    font-family:var(--mono);font-size:0.78rem;color:var(--violet);margin-bottom:0.8rem;
+    text-transform:uppercase;letter-spacing:0.03em;
+  }
+  .skill-tags{display:flex;flex-wrap:wrap;gap:0.5rem;}
+  .skill-tag{
+    font-size:0.82rem;background:var(--bg-panel-2);border:1px solid var(--line);
+    padding:0.3rem 0.7rem;border-radius:6px;color:var(--text);
+  }
+  @media(max-width:700px){.skills-grid{grid-template-columns:1fr;}}
+
+  /* EXPERIENCE - terminal style */
+  .exp-item{
+    border-left:2px solid var(--line);padding:0 0 2.5rem 2rem;position:relative;
+  }
+  .exp-item::before{
+    content:'';position:absolute;left:-7px;top:4px;width:12px;height:12px;
+    border-radius:50%;background:var(--mint);box-shadow:0 0 10px var(--mint);
+  }
+  .exp-item:last-child{padding-bottom:0;}
+  .exp-role{font-size:1.2rem;font-weight:700;}
+  .exp-co{color:var(--mint);font-family:var(--mono);font-size:0.88rem;margin-top:0.2rem;}
+  .exp-date{color:var(--muted);font-family:var(--mono);font-size:0.8rem;margin-top:0.3rem;}
+  .exp-bullets{margin-top:0.9rem;color:var(--muted);font-size:0.95rem;}
+  .exp-bullets li{margin-bottom:0.5rem;list-style:none;position:relative;padding-left:1.2rem;}
+  .exp-bullets li::before{content:'▸';position:absolute;left:0;color:var(--amber);}
+
+  /* PROJECTS - mission cards */
+  .proj-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem;}
+  .proj-card{
+    background:var(--bg-panel);border:1px solid var(--line);border-radius:14px;
+    padding:1.6rem;display:flex;flex-direction:column;gap:0.9rem;
+    transition:border-color .2s, transform .2s;
+  }
+  .proj-card:hover{border-color:var(--mint);transform:translateY(-3px);}
+  .proj-top{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;}
+  .proj-title{font-size:1.15rem;font-weight:700;}
+  .proj-stack{font-family:var(--mono);font-size:0.75rem;color:var(--violet);}
+  .proj-badge{
+    font-family:var(--mono);font-size:0.7rem;color:var(--amber);border:1px solid var(--amber);
+    padding:0.15rem 0.6rem;border-radius:100px;white-space:nowrap;
+  }
+  .proj-desc{color:var(--muted);font-size:0.92rem;flex:1;}
+  .proj-bullets{color:var(--muted);font-size:0.86rem;}
+  .proj-bullets li{margin-bottom:0.35rem;list-style:none;padding-left:1.1rem;position:relative;}
+  .proj-bullets li::before{content:'–';position:absolute;left:0;color:var(--mint);}
+  @media(max-width:800px){.proj-grid{grid-template-columns:1fr;}}
+
+  /* CERTS */
+  .cert-list{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;}
+  .cert-item{
+    display:flex;align-items:center;gap:1rem;background:var(--bg-panel);
+    border:1px solid var(--line);border-radius:10px;padding:1rem 1.2rem;
+  }
+  .cert-icon{
+    width:34px;height:34px;border-radius:8px;background:rgba(124,255,196,0.1);
+    display:flex;align-items:center;justify-content:center;color:var(--mint);flex-shrink:0;
+    font-family:var(--mono);font-weight:700;
+  }
+  .cert-name{font-weight:600;font-size:0.92rem;}
+  .cert-desc{color:var(--muted);font-size:0.8rem;margin-top:0.15rem;}
+  @media(max-width:700px){.cert-list{grid-template-columns:1fr;}}
+
+  /* CONTACT */
+  #contact .inner{text-align:center;}
+  .contact-card{
+    background:var(--bg-panel);border:1px solid var(--line);border-radius:16px;
+    padding:3rem 2rem;max-width:640px;margin:0 auto;
+  }
+  .contact-links{display:flex;justify-content:center;gap:1.2rem;flex-wrap:wrap;margin-top:1.8rem;}
+  .contact-link{
+    border:1px solid var(--line);padding:0.6rem 1.1rem;border-radius:8px;font-size:0.88rem;
+    transition:border-color .2s, color .2s;
+  }
+  .contact-link:hover{border-color:var(--mint);color:var(--mint);}
+
+  footer{
+    text-align:center;padding:2.5rem 2rem;color:var(--muted);font-size:0.82rem;
+    border-top:1px solid var(--line);font-family:var(--mono);
+  }
+
+  /* reveal animation */
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease, transform .6s ease;}
+  .reveal.show{opacity:1;transform:translateY(0);}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="nav-logo"><span class="dot"></span>KGR.dev</div>
+  <div class="nav-links" id="navLinks">
+    <a href="#about">About</a>
+    <a href="#skills">Skills</a>
+    <a href="#experience">Experience</a>
+    <a href="#projects">Projects</a>
+    <a href="#certifications">Certifications</a>
+    <a href="#contact">Contact</a>
+    <a href="resume%20.pdf" download target="_blank" class="nav-resume" id="resumeLink">Resume ↓</a>
+  </div>
+  <button class="hamburger" id="hbg">☰</button>
+</nav>
+<div class="mobile-menu" id="mob">
+  <a href="#about">About</a>
+  <a href="#skills">Skills</a>
+  <a href="#experience">Experience</a>
+  <a href="#projects">Projects</a>
+  <a href="#certifications">Certifications</a>
+  <a href="#contact">Contact</a>
+</div>
+
+<!-- HERO -->
+<section id="home">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Open to relocate · Available for full-time & internship roles</div>
+    <h1 class="hero-name">Kotha Gowtham<br><span class="highlight">Reddy</span></h1>
+    <p class="hero-bio">Computer Science graduate student building at the intersection of <strong>AI &amp; Data Science</strong>, <strong>data analytics</strong>, and <strong>game systems</strong> — from predictive ML models and BI dashboards to gameplay mechanics built in Unity.</p>
+    <div class="hero-tags">
+      <span class="hero-tag">AI &amp; Data Science</span>
+      <span class="hero-tag">Data Analytics</span>
+      <span class="hero-tag">Game Development</span>
+      <span class="hero-tag">Full-Stack</span>
+    </div>
+    <div class="hero-cta">
+      <a href="#contact" class="btn btn-primary">Get in Touch →</a>
+      <a href="#experience" class="btn btn-outline">See Experience</a>
+    </div>
+    <div class="hud">
+      <div class="hud-cell"><div class="val">6+</div><div class="lbl">Languages</div></div>
+      <div class="hud-cell"><div class="val">3</div><div class="lbl">Internships</div></div>
+      <div class="hud-cell"><div class="val">4</div><div class="lbl">Certifications</div></div>
+      <div class="hud-cell"><div class="val">3.0</div><div class="lbl">Grad GPA</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="inner">
+    <div class="s-eyebrow reveal">Who I Am</div>
+    <h2 class="s-title reveal">About Me</h2>
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <p>I'm a Master's student in <strong>Computer Science at Bowling Green State University</strong>, with an undergraduate background in <strong>Artificial Intelligence &amp; Data Science</strong>. My work spans building predictive ML models, cleaning and visualizing data in Power BI and Tableau, developing full-stack web apps, and building game mechanics in Unity with C#.</p>
+        <p>I've interned at <strong>DRDO</strong> (India's Defence Research and Development Organisation) on backend data pipelines, and at a data analytics firm building dashboards used by 50+ business stakeholders. I like projects that combine analytical rigor with hands-on building — whether that's a fraud-style prediction model or a playable prototype.</p>
+      </div>
+      <div class="reveal">
+        <div class="edu-card">
+          <div class="school">Bowling Green State University</div>
+          <div class="degree">M.S. in Computer Science</div>
+          <div class="meta">Aug 2025 – May 2027 · CGPA 3.0/4.0</div>
+        </div>
+        <div class="edu-card">
+          <div class="school">Guru Nanak Institute of Technical Campus</div>
+          <div class="degree">B.E. in Artificial Intelligence &amp; Data Science</div>
+          <div class="meta">Aug 2021 – May 2025 · CGPA 7.5/10.0</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="inner">
+    <div class="s-eyebrow reveal">Technical Skills</div>
+    <h2 class="s-title reveal">What I Work With</h2>
+    <div class="skills-grid">
+      <div class="skill-card reveal">
+        <div class="cat">Programming Languages</div>
+        <div class="skill-tags">
+          <span class="skill-tag">C#</span><span class="skill-tag">Python</span><span class="skill-tag">C</span><span class="skill-tag">JavaScript</span><span class="skill-tag">SQL</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="cat">Game Development</div>
+        <div class="skill-tags">
+          <span class="skill-tag">Unity Engine</span><span class="skill-tag">Game Physics</span><span class="skill-tag">3D Modeling Integration</span><span class="skill-tag">Game Mechanics Design</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="cat">Data Analysis &amp; Visualization</div>
+        <div class="skill-tags">
+          <span class="skill-tag">Power BI</span><span class="skill-tag">Tableau</span><span class="skill-tag">Excel</span><span class="skill-tag">Power Query</span><span class="skill-tag">NumPy</span><span class="skill-tag">Pandas</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="cat">Database Systems</div>
+        <div class="skill-tags">
+          <span class="skill-tag">MySQL</span><span class="skill-tag">Snowflake</span><span class="skill-tag">PostgreSQL</span><span class="skill-tag">MongoDB</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="cat">Web Technologies</div>
+        <div class="skill-tags">
+          <span class="skill-tag">HTML5</span><span class="skill-tag">CSS3</span><span class="skill-tag">Bootstrap</span><span class="skill-tag">React.js</span><span class="skill-tag">Node.js</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="cat">Tools &amp; Platforms</div>
+        <div class="skill-tags">
+          <span class="skill-tag">Git</span><span class="skill-tag">GitHub</span><span class="skill-tag">VS Code</span><span class="skill-tag">Docker</span><span class="skill-tag">CI/CD</span><span class="skill-tag">AWS</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="inner">
+    <div class="s-eyebrow reveal">Work History</div>
+    <h2 class="s-title reveal">Experience</h2>
+
+    <div class="exp-item reveal">
+      <div class="exp-role">Student Web Developer</div>
+      <div class="exp-co">Tucker Center · Bowling Green State University</div>
+      <div class="exp-date">Jan 2026 – Apr 2026</div>
+      <ul class="exp-bullets">
+        <li>Maintained and updated web pages and digital content for the Tucker Center using HTML, CSS, and JavaScript</li>
+        <li>Collaborated with staff to translate content and design requests into working web updates</li>
+        <li>Ensured pages were responsive, on-brand, and consistent across devices</li>
+        <li>Prioritized multiple content requests and turnarounds while meeting deadlines</li>
+      </ul>
+    </div>
+
+    <div class="exp-item reveal">
+      <div class="exp-role">Software Engineering Intern</div>
+      <div class="exp-co">DRDO (Defence Research and Development Organisation) · Hyderabad, India</div>
+      <div class="exp-date">Jun 2024 – Aug 2024</div>
+      <ul class="exp-bullets">
+        <li>Assisted in developing data-driven applications using Python and SQL, supporting backend data processing workflows</li>
+        <li>Implemented backend logic for data validation, transformation, and storage, improving data reliability</li>
+        <li>Debugged and optimized application code to enhance performance and maintainability</li>
+        <li>Worked in an agile environment, participating in sprint planning and code reviews</li>
+      </ul>
+    </div>
+
+    <div class="exp-item reveal">
+      <div class="exp-role">Data Analytics Intern</div>
+      <div class="exp-co">Tech Solutions Pvt. Ltd. · Hyderabad, India</div>
+      <div class="exp-date">Jan 2024 – May 2024</div>
+      <ul class="exp-bullets">
+        <li>Analyzed large datasets using Python (Pandas, NumPy) to identify business trends and generate actionable insights</li>
+        <li>Developed interactive Power BI and Tableau dashboards, improving data accessibility for 50+ business users</li>
+        <li>Performed data cleaning and transformation using Excel and Power Query, ensuring data quality</li>
+        <li>Automated reporting workflows, reducing manual reporting time by 40% through Python scripting</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="inner">
+    <div class="s-eyebrow reveal">Selected Work</div>
+    <h2 class="s-title reveal">Projects</h2>
+    <div class="proj-grid">
+
+      <div class="proj-card reveal">
+        <div class="proj-top">
+          <div>
+            <div class="proj-title">Predictive Analytics System</div>
+            <div class="proj-stack">Python · Scikit-learn · Pandas</div>
+          </div>
+          <span class="proj-badge">85% Accuracy</span>
+        </div>
+        <p class="proj-desc">Machine learning system forecasting trends using supervised algorithms.</p>
+        <ul class="proj-bullets">
+          <li>Built a data preprocessing pipeline handling 5,000+ records, including feature engineering and normalization</li>
+          <li>Applied Random Forest and Gradient Boosting for classification tasks</li>
+          <li>Visualized model performance and feature importance with Matplotlib and Seaborn</li>
+        </ul>
+      </div>
+
+      <div class="proj-card reveal">
+        <div class="proj-top">
+          <div>
+            <div class="proj-title">Snowflake Snowsight Visualization</div>
+            <div class="proj-stack">Snowflake · Tableau · Power BI</div>
+          </div>
+          <span class="proj-badge">Cloud BI</span>
+        </div>
+        <p class="proj-desc">Interactive analytics dashboard for customer behavior and sales trends.</p>
+        <ul class="proj-bullets">
+          <li>Integrated Snowflake with Tableau and Power BI for advanced cross-functional reporting</li>
+          <li>Implemented data visualization best practices for actionable business insight</li>
+          <li>Optimized query performance for real-time analytics</li>
+        </ul>
+      </div>
+
+      <div class="proj-card reveal">
+        <div class="proj-top">
+          <div>
+            <div class="proj-title">Real-Time Web Application</div>
+            <div class="proj-stack">React.js · Node.js · MongoDB</div>
+          </div>
+          <span class="proj-badge">Full-Stack</span>
+        </div>
+        <p class="proj-desc">Full-stack app with real-time client-server data synchronization.</p>
+        <ul class="proj-bullets">
+          <li>Built RESTful APIs for seamless client-server communication</li>
+          <li>Designed a responsive UI ensuring cross-device compatibility</li>
+          <li>Integrated authentication and authorization for secure access</li>
+        </ul>
+      </div>
+
+      <div class="proj-card reveal">
+        <div class="proj-top">
+          <div>
+            <div class="proj-title">Data Analytics Dashboard</div>
+            <div class="proj-stack">Python · Pandas · Power BI</div>
+          </div>
+          <span class="proj-badge">60% Faster</span>
+        </div>
+        <p class="proj-desc">End-to-end analytics solution from raw data to interactive dashboard.</p>
+        <ul class="proj-bullets">
+          <li>Cleaned and transformed data using Pandas and NumPy</li>
+          <li>Built interactive Power BI dashboards for key performance metrics</li>
+          <li>Automated workflows with Power Query, cutting prep time by 60%</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certifications">
+  <div class="inner">
+    <div class="s-eyebrow reveal">Recognition</div>
+    <h2 class="s-title reveal">Certifications</h2>
+    <div class="cert-list">
+      <div class="cert-item reveal">
+        <div class="cert-icon">DA</div>
+        <div>
+          <div class="cert-name">Data Analytics Certification — NxtWave</div>
+          <div class="cert-desc">Data analysis, visualization, and reporting</div>
+        </div>
+      </div>
+      <div class="cert-item reveal">
+        <div class="cert-icon">PY</div>
+        <div>
+          <div class="cert-name">Python Programming Certification — NxtWave</div>
+          <div class="cert-desc">Python for data analysis and scripting</div>
+        </div>
+      </div>
+      <div class="cert-item reveal">
+        <div class="cert-icon">DB</div>
+        <div>
+          <div class="cert-name">MySQL Database Certification — NxtWave</div>
+          <div class="cert-desc">Database design, query optimization, data management</div>
+        </div>
+      </div>
+      <div class="cert-item reveal">
+        <div class="cert-icon">WD</div>
+        <div>
+          <div class="cert-name">Web Development Certification — NxtWave</div>
+          <div class="cert-desc">HTML, CSS, Bootstrap, responsive design</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="inner">
+    <div class="s-eyebrow reveal" style="justify-content:center">Get In Touch</div>
+    <h2 class="s-title reveal">Let's Work Together</h2>
+    <div class="contact-card reveal">
+      <p style="color:var(--muted)">Open to relocation for full-time roles and internships in AI/ML, data analytics, and software engineering.</p>
+      <div class="contact-links">
+        <a href="mailto:gowthamreddykotha1@gmail.com" class="contact-link">✉ Email</a>
+        <a href="tel:+14194949440" class="contact-link">☎ (+1) 419-494-9440</a>
+        <a href="http://linkedin.com/in/gowtham-reddy-kotha-6a3b87299" target="_blank" rel="noopener" class="contact-link">in LinkedIn</a>
+        <a href="https://github.com/GowthamReddyKotha14" target="_blank" rel="noopener" class="contact-link">⌥ GitHub</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  © 2026 Kotha Gowtham Reddy · Built with HTML, CSS &amp; JS
+</footer>
+
+<script>
+  // mobile menu
+  const hbg = document.getElementById('hbg');
+  const mob = document.getElementById('mob');
+  hbg.addEventListener('click', () => mob.classList.toggle('open'));
+  mob.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mob.classList.remove('open')));
+
+  // scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('show'); });
+  }, {threshold:0.12});
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
